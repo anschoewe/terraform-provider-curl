@@ -11,3 +11,9 @@ make install
 cd examples/
 rm -fr .terraform/ .terraform.lock.hcl && terraform init && terraform apply --auto-approve
 ```
+
+# Plugin Authors
+Here is how you can generate the documentation
+```
+go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+```
