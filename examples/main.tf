@@ -28,7 +28,7 @@ output "all_todos" {
   value = local.json_data
 }
 
-//# Returns the first IPs
+//# Returns the title of todo
 output "todo_title" {
   value = local.json_data.title
 }
