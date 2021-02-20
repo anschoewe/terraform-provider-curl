@@ -3,10 +3,10 @@ package curl
 import (
 	"context"
 	"fmt"
-	"log"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -19,16 +19,17 @@ func dataSource() *schema.Resource {
 			"uri": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-
+				Description: "URI of resource you'd like to retrieve via HTTP(s).",
 			},
 			"http_method": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-
+				Description: "HTTP method like GET, POST, PUT, DELETE, PATCH.",
 			},
 			"response": &schema.Schema{
 				Type:     schema.TypeString,
 				Computed: true,
+				Description: "Valued returned by the HTTP request.",
 			},
 		},
 	}
