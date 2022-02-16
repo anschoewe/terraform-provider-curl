@@ -1,6 +1,6 @@
 module github.com/anschoewe/terraform-curl
 
-go 1.15
+go 1.16
 
 require (
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.7
