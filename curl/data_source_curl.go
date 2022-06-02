@@ -1,6 +1,7 @@
 package curl
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -17,19 +18,24 @@ func dataSource() *schema.Resource {
 		ReadContext: dataSourceRead,
 		Schema: map[string]*schema.Schema{
 			"uri": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
 				Description: "URI of resource you'd like to retrieve via HTTP(s).",
 			},
 			"http_method": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
+				Type:        schema.TypeString,
+				Required:    true,
 				Description: "HTTP method like GET, POST, PUT, DELETE, PATCH.",
 			},
 			"response": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
 				Description: "Valued returned by the HTTP request.",
+			},
+			"json_payload": &schema.Schema{
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Json payload in string format with quote esc character.",
 			},
 		},
 	}
@@ -44,7 +50,20 @@ func dataSourceRead(ctx context.Context, d *schema.ResourceData, meta interface{
 	uri := d.Get("uri").(string)
 	httpMethod := d.Get("http_method").(string)
 
-	req, err := http.NewRequest(httpMethod, uri, nil)
+	//Declared variable for if condition
+	var req *http.Request
+	var err error
+
+	if httpMethod != "GET" {
+		jsonPayload := d.Get("json_payload").(string)
+		postBody := []byte(jsonPayload)
+		payloadBody := bytes.NewBuffer(postBody)
+		req, err = http.NewRequest(httpMethod, uri, payloadBody)
+		req.Header.Set("Content-Type", "application/json")
+	} else {
+		req, err = http.NewRequest(httpMethod, uri, nil)
+	}
+
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -62,7 +81,7 @@ func dataSourceRead(ctx context.Context, d *schema.ResourceData, meta interface{
 		if err != nil {
 			return diag.FromErr(err)
 		}
-		req.Header.Set("Authorization", "Bearer " + spToken.OAuthToken())
+		req.Header.Set("Authorization", "Bearer "+spToken.OAuthToken())
 	}
 
 	log.Printf("[INFO] ******* About to send request")
