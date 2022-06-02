@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     curl = {
-      version = "0.1.4"
+      version = "1.0.2"
       source  = "anschoewe/curl"
     }
   }
