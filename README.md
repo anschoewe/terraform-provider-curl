@@ -30,3 +30,6 @@ Here is how you can generate the documentation
 ```
 go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 ```
+
+## Contributor
+* Avinash Kumar (@inviul) for payload with PUT, PATCH and POST call
