@@ -21,8 +21,9 @@ provider "curl" {
 }
 
 data "curl" "getTodos" {
-  http_method = "GET"
+  http_method = "POST"
   uri = "https://jsonplaceholder.typicode.com/todos/1"
+  json_payload = "[{\"key\":\"value\"}]"
 }
 
 locals {
@@ -47,6 +48,7 @@ output "todo_title" {
 
 - **http_method** (String) HTTP method like GET, POST, PUT, DELETE, PATCH.
 - **uri** (String) URI of resource you'd like to retrieve via HTTP(s).
+- **json_paload** (String) This is required for POST, PUT & PATCH. Ex: "[{\\"key\\":\\"value\\"}]"
 
 ### Optional
 
